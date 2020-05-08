@@ -18,16 +18,21 @@ object Main {
         Flyway.configure().dataSource(d.ds).load()
     }
 
-    args.headOption orElse Option("migration") get match {
-      case "migration" => flyway.migrate()
-      case "clean" => flyway.clean()
-      case "repair" => flyway.repair()
-      case "info" => printlnMigInfo(flyway)
-    }
+    val command =  args.headOption.get
+    val method = flyway.getClass.getDeclaredMethod(command)
+    method.invoke(method, flyway)
+    flyway.migrate()
+    flyway.info().current()
+//    orElse Option("migration") get match {
+//      case "migration" => flyway.migrate()
+//      case "clean" => flyway.clean()
+//      case "repair" => flyway.repair()
+//      case "info" => printlnMigInfo(flyway)
+//    }
 
   }
 
-  def printlnMigInfo(flyway: Flyway): Unit = {
+  def printMigInfo(flyway: Flyway): Unit = {
     val info = flyway.info()
     List("Current" -> Option(info.current()).toArray, "Applied" -> info.applied(), "Pending" -> info.pending()) foreach { t2 =>
       println(t2._1)

@@ -1,0 +1,1 @@
+insert into ACCOUNT (PASSPORT, PASSWORD) values ('admin', 'admin');

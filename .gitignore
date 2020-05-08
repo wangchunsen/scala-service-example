@@ -3,3 +3,5 @@
 target/
 project/porject/
 project/target/
+.bloop/
+.metals/
